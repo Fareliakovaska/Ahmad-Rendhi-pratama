@@ -87,21 +87,20 @@
         }
 
         .foto {
-    width: 100%;
-    aspect-ratio:4/3;
-    text-align: center;
-    cursor:pointer;
-    object-fit: cover;
-    display: block;
-    border-radius:0;
-    transform:scale(1.03);
-}
+            width: 100%;
+            aspect-ratio:4/3;
+            text-align: center;
+            cursor:pointer;
+            object-fit: cover;
+            display: block;
+            border-radius:0;
+            transform:scale(1.03);
+        }
 
-.foto img {
-    width:100%;
+        .foto img {
+            width:100%;
             height: 100%;
             object-fit: cover;
-
         }
 
         .card h3 {
@@ -133,6 +132,38 @@
             padding: 20px;
         }
 
+        /* --- TOMBOL MUSIK --- */
+        .music-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #0066ff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 102, 255, 0.4);
+            z-index: 999;
+            transition: 0.3s;
+            animation: pulse 2s infinite;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+            background: #00bfff;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 102, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 102, 255, 0); }
+        }
+
         @media (max-width: 600px) {
             header h1 {
                 font-size: 28px;
@@ -152,12 +183,6 @@
     <header>
         <h1>📚 Kelas 12 kepenjit 1</h1>
         <p>Website Biodata sekelazz</p>
-
-        <audio controls loop>
-    <source src="DJ%20TABRAK-TABRAK%20MASUK%20(Oke%20Gas%202)%20-%20Richard%20Jersey%20(Official%20Music%20Video)(MP3_70K)_1.mp3" type="audio/mpeg">
-    Browser kamu tidak mendukung audio.
-        </audio>
-        
     </header>
 
     <!-- MENU -->
@@ -209,8 +234,8 @@
 
             <div class="card">
                 <div class="foto">
-    <img src=" images (13).jpeg " alt="Foto prabowo subianto">
-                    </div>
+                    <img src="images (13).jpeg" alt="Foto prabowo subianto">
+                </div>
                 <h3></h3>
                 <p><b>NIS:</b> 001</p>
                 <p><b>Jenis Kelamin:</b> batang</p>
@@ -221,7 +246,7 @@
             <div class="card">
                 <div class="foto">
                     <img src="images (12).jpeg" alt="Foto jokowi">
-                    </div>
+                </div>
                 <h3>jokowi</h3>
                 <p><b>NIS:</b> 002</p>
                 <p><b>Jenis Kelamin:</b>Laki-Laki</p>
@@ -232,7 +257,7 @@
             <div class="card">
                 <div class="foto">
                     <img src="images (11).jpeg" alt="Foto erika">
-                    </div>
+                </div>
                 <h3>erika</h3>
                 <p><b>NIS:</b> 003</p>
                 <p><b>Jenis Kelamin:</b> perempuan</p>
@@ -243,7 +268,7 @@
             <div class="card">
                 <div class="foto">
                     <img src="images (10).jpeg" alt="Foto lily supriyanto">
-                    </div>
+                </div>
                 <h3>lily supriyanto</h3>
                 <p><b>NIS:</b> 004</p>
                 <p><b>Jenis Kelamin:</b> Perempuan</p>
@@ -282,5 +307,29 @@
         <p>Website BUZZER MBG DAN KOPDES</p>
     </footer>
 
+    <!-- ============================================== -->
+    <!-- KODE TOMBOL MUSIK & AUDIO (TAMBAHAN BARU)      -->
+    <!-- ============================================== -->
+    <div class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</div>
+
+    <audio id="bgMusic" loop>
+        <source src="DJ%20TABRAK-TABRAK%20MASUK%20(Oke%20Gas%202)%20-%20Richard%20Jersey%20(Official%20Music%20Video)(MP3_70K)_1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const audio = document.getElementById('bgMusic');
+        const btn = document.getElementById('musicBtn');
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                btn.innerHTML = '⏸️'; 
+            } else {
+                audio.pause();
+                btn.innerHTML = '🎵'; 
+            }
+        }
+    </script>
+
 </body>
-  </html>
+</html>
