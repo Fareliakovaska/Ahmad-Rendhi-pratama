@@ -132,11 +132,35 @@
             padding: 20px;
         }
 
-        /* --- TOMBOL MUSIK --- */
-        .music-btn {
+        /* --- TOMBOL MUSIK & INFO LAGU --- */
+        .music-container {
             position: fixed;
             bottom: 30px;
             right: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            z-index: 999;
+        }
+
+        .music-info {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 10px;
+            white-space: nowrap;
+            opacity: 0; /* Disembunyikan dulu */
+            transition: 0.3s;
+            pointer-events: none; /* Biar nggak ganggu klik */
+        }
+
+        .music-container:hover .music-info {
+            opacity: 1; /* Muncul pas di-hover */
+        }
+
+        .music-btn {
             width: 60px;
             height: 60px;
             background: #0066ff;
@@ -148,7 +172,6 @@
             font-size: 28px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 102, 255, 0.4);
-            z-index: 999;
             transition: 0.3s;
             animation: pulse 2s infinite;
         }
@@ -211,27 +234,19 @@
 
     <!-- PROFIL -->
     <section id="profil">
-
         <h2>Profil Kelas</h2>
-
         <div class="profil">
-
             <p><b>Nama Sekolah:</b> SMA Setia darma PLG</p>
             <p><b>Kelas:</b> XII-1</p>
             <p><b>Wali Kelas:</b> dia bunga gitasari,Skom.,Gr</p>
             <p><b>Tahun Pelajaran:</b> 2026/2027</p>
-
         </div>
-
     </section>
 
     <!-- ANGGOTA -->
     <section id="anggota">
-
         <h2>Biodata Buzzer MBG</h2>
-
         <div class="anggota">
-
             <div class="card">
                 <div class="foto">
                     <img src="images (13).jpeg" alt="Foto prabowo subianto">
@@ -275,30 +290,19 @@
                 <p><b>Hobi:</b> ngoding</p>
                 <p><b>Cita-cita:</b> admin slot</p>
             </div>
-
         </div>
-
     </section>
 
     <!-- INFORMASI -->
     <section class="info" id="informasi">
-
         <h2>Informasi Kelas</h2>
-
         <div class="info-box">
-
             <p>👨‍🏫 <b>Wali Kelas:</b>Dia bunga gitasari,S.Pd.,Gr</p>
-
             <p>👥 <b>Jumlah Peserta Didik:</b> 30 orang</p>
-
             <p>🏫 <b>Ruang Kelas:</b> XII</p>
-
             <p>📅 <b>Tahun Pelajaran:</b> 2026/2027</p>
-
             <p>🏆 <b>Motto:</b> Oke gas!! </p>
-
         </div>
-
     </section>
 
     <!-- FOOTER -->
@@ -308,57 +312,78 @@
     </footer>
 
     <!-- ============================================== -->
-    <!-- KODE TOMBOL MUSIK & YOUTUBE (VERSI BARU)       -->
+    <!-- KODE TOMBOL MUSIK & YOUTUBE (TAMBAHAN BARU)    -->
     <!-- ============================================== -->
-    
-    <!-- Tombol Musik -->
-    <div class="music-btn" id="musicBtn">🎵</div>
+    <div class="music-container">
+        <!-- Teks Info Lagu (Muncul pas di-hover) -->
+        <div class="music-info" id="musicInfo">🎶 Instrumental (from YouTube)</div>
+        
+        <!-- Tombol Play -->
+        <div class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</div>
+    </div>
 
-    <!-- Iframe YouTube Tersembunyi (Di-set 1x1 pixel biar gak kelihatan) -->
-    <!-- Video ID: j_ohYSNBqZA -->
-    <div id="youtube-player" style="position: fixed; bottom: -100px; left: -100px;"></div>
+    <!-- Iframe YouTube Tersembunyi -->
+    <div id="ytPlayerContainer" style="display: none;"></div>
 
     <!-- Script API YouTube -->
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
         let player;
-        let isPlaying = false;
         const btn = document.getElementById('musicBtn');
+        const musicInfo = document.getElementById('musicInfo');
+        let isPlaying = false;
 
-        // Fungsi ini otomatis dipanggil oleh API YouTube setelah script dimuat
+        // Fungsi yang otomatis dipanggil oleh API YouTube setelah script dimuat
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtube-player', {
-                height: '1', // Kecilin ukurannya
-                width: '1',  // Kecilin ukurannya
-                videoId: 'j_ohYSNBqZA', // ID Video dari link yg lu kasih
+            player = new YT.Player('ytPlayerContainer', {
+                height: '0',
+                width: '0',
+                videoId: 'j_ohYSNBqZA', // ID video dari link kamu
                 playerVars: {
-                    'playsinline': 1,
+                    'autoplay': 0,
                     'loop': 1,
-                    'playlist': 'j_ohYSNBqZA' // Wajib ada biar loop jalan
+                    'playlist': 'j_ohYSNBqZA', // Wajib ditambahin biar loop-nya jalan
+                    'controls': 0
                 },
                 events: {
-                    'onReady': (event) => {
-                        // Set volume jadi 50% biar gak kaget
-                        event.target.setVolume(50); 
-                    }
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
                 }
             });
         }
 
-        // Fungsi saat tombol diklik
-        btn.addEventListener('click', () => {
-            if (player && player.getPlayerState() !== undefined) {
-                // Kalau belum muter (status bukan 1)
-                if (player.getPlayerState() !== 1) {
-                    player.playVideo();
-                    btn.innerHTML = '⏸️'; 
-                } else {
-                    player.pauseVideo();
-                    btn.innerHTML = '🎵'; 
-                }
+        function onPlayerReady(event) {
+            // Set volume biar nggak terlalu kenceng (0-100)
+            event.target.setVolume(50); 
+        }
+
+        // Deteksi kalau lagu sudah muter atau berhenti
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING) {
+                btn.innerHTML = '⏸️';
+                musicInfo.innerHTML = '🎶 Sedang Memutar: Instrumental...';
+            } else if (event.data == YT.PlayerState.PAUSED) {
+                btn.innerHTML = '🎵';
+                musicInfo.innerHTML = '⏸️ Musik Di-pause';
             }
-        });
+        }
+
+        // Fungsi pas tombol diklik
+        function toggleMusic() {
+            if (!player) {
+                alert("Musik masih loading, tunggu sebentar ya...");
+                return;
+            }
+
+            if (isPlaying) {
+                player.pauseVideo();
+                isPlaying = false;
+            } else {
+                player.playVideo();
+                isPlaying = true;
+            }
+        }
     </script>
 
 </body>
