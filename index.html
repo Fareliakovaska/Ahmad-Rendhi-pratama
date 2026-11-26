@@ -20,7 +20,6 @@
         }
 
         body {
-            /* Tema Malam Langit Biru Muda */
             background: linear-gradient(135deg, #0a192f 0%, #173b6c 50%, #1e5b96 100%);
             background-attachment: fixed;
             color: #e6f1ff;
@@ -110,7 +109,7 @@
             letter-spacing: 2px;
         }
 
-        /* --- MENU NAVIGASI (GLASSMORPHISM) --- */
+        /* --- MENU NAVIGASI --- */
         nav {
             position: sticky;
             top: 0;
@@ -144,12 +143,8 @@
             transition: 0.3s;
         }
 
-        nav a:hover {
-            color: #64ffda;
-        }
-        nav a:hover::after {
-            width: 100%;
-        }
+        nav a:hover { color: #64ffda; }
+        nav a:hover::after { width: 100%; }
 
         /* --- SECTION & CONTENT --- */
         section {
@@ -179,7 +174,7 @@
             border-radius: 5px;
         }
 
-        /* Kartu Kaca (Glassmorphism) */
+        /* Kartu Kaca */
         .profil, .card, .info-box {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
@@ -227,9 +222,7 @@
             transition: transform 0.5s ease;
         }
 
-        .card:hover .foto img {
-            transform: scale(1.1); /* Zoom in pas dihover */
-        }
+        .card:hover .foto img { transform: scale(1.1); }
 
         .card h3 {
             color: #64ffda;
@@ -245,9 +238,7 @@
             line-height: 1.5;
         }
 
-        .card p b {
-            color: #e6f1ff;
-        }
+        .card p b { color: #e6f1ff; }
 
         /* --- INFORMASI BOX --- */
         .info-box p {
@@ -256,9 +247,7 @@
             border-bottom: 1px solid rgba(255,255,255,0.05);
             padding-bottom: 10px;
         }
-        .info-box p:last-child {
-            border-bottom: none;
-        }
+        .info-box p:last-child { border-bottom: none; }
 
         /* --- FOOTER --- */
         footer {
@@ -297,9 +286,7 @@
             pointer-events: none;
         }
 
-        .music-container:hover .music-info {
-            opacity: 1;
-        }
+        .music-container:hover .music-info { opacity: 1; }
 
         #tombolMusik {
             width: 65px;
@@ -332,10 +319,7 @@
         /* --- RESPONSIVE HP --- */
         @media (max-width: 768px) {
             header h1 { font-size: 30px; }
-            nav a { 
-                display: inline-block; 
-                margin: 5px 10px; 
-            }
+            nav a { display: inline-block; margin: 5px 10px; }
             section { padding: 40px 5%; }
             h2 { font-size: 26px; }
             .music-container { bottom: 20px; right: 20px; }
@@ -389,51 +373,38 @@
     <section id="anggota">
         <h2 class="reveal">Biodata Buzzer MBG</h2>
         <div class="anggota">
-            
             <div class="card reveal">
-                <div class="foto">
-                    <img src="images (13).jpeg" alt="Foto prabowo subianto">
-                </div>
+                <div class="foto"><img src="images (13).jpeg" alt="Foto prabowo subianto"></div>
                 <h3>Prabowo</h3>
                 <p><b>NIS:</b> 001</p>
                 <p><b>Jenis Kelamin:</b> Batang</p>
                 <p><b>Hobi:</b> Pidato</p>
                 <p><b>Cita-cita:</b> Nanam Sawit</p>
             </div>
-
             <div class="card reveal">
-                <div class="foto">
-                    <img src="images (12).jpeg" alt="Foto jokowi">
-                </div>
+                <div class="foto"><img src="images (12).jpeg" alt="Foto jokowi"></div>
                 <h3>Jokowi</h3>
                 <p><b>NIS:</b> 002</p>
                 <p><b>Jenis Kelamin:</b> Laki-Laki</p>
                 <p><b>Hobi:</b> Ngutang</p>
                 <p><b>Cita-cita:</b> Menjadi Warga Biasa</p>
             </div>
-
             <div class="card reveal">
-                <div class="foto">
-                    <img src="images (11).jpeg" alt="Foto erika">
-                </div>
+                <div class="foto"><img src="images (11).jpeg" alt="Foto erika"></div>
                 <h3>Erika</h3>
                 <p><b>NIS:</b> 003</p>
                 <p><b>Jenis Kelamin:</b> Perempuan</p>
                 <p><b>Hobi:</b> Wibu</p>
                 <p><b>Cita-cita:</b> Nak Jadi Anime</p>
             </div>
-
             <div class="card reveal">
-                <div class="foto">
-                    <img src="images (10).jpeg" alt="Foto lily supriyanto">
-                </div>
+                <div class="foto"><img src="images (10).jpeg" alt="Foto lily supriyanto"></div>
                 <h3>Lily Supriyanto</h3>
                 <p><b>NIS:</b> 004</p>
                 <p><b>Jenis Kelamin:</b> Perempuan</p>
                 <p><b>Hobi:</b> Ngoding</p>
                 <p><b>Cita-cita:</b> Admin Slot</p>
             </div>
-
         </div>
     </section>
 
@@ -456,12 +427,12 @@
     </footer>
 
     <!-- ============================================== -->
-    <!-- KODE MUSIK DARI KAMU                           -->
+    <!-- PEMUTAR MUSIK YOUTUBE (DIKECILKAN, BUKAN DISEMBUNYIKAN) -->
     <!-- ============================================== -->
-    <div id="player" style="display: none;"></div>
+    <div id="player" style="position: absolute; width: 1px; height: 1px; opacity: 0.01; pointer-events: none; bottom: 0; left: 0;"></div>
 
     <div class="music-container">
-        <div class="music-info">🎶 Instrumental (YouTube)</div>
+        <div class="music-info" id="musicInfo">🎶 Instrumental (YouTube)</div>
         <button onclick="toggleMusik()" id="tombolMusik">🔇</button>
     </div>
 
@@ -474,34 +445,67 @@
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
-                height: '0',
-                width: '0',
+                height: '1',
+                width: '1',
                 videoId: 'j_ohYSNBqZA', // Video ID punya kamu
                 playerVars: {
-                    autoplay: 1,
+                    autoplay: 0, // Jangan autoplay pas load, biar aman dari block browser
                     loop: 1,
-                    playlist: 'j_ohYSNBqZA'
+                    playlist: 'j_ohYSNBqZA',
+                    controls: 0,
+                    disablekb: 1,
+                    fs: 0,
+                    modestbranding: 1,
+                    rel: 0
                 },
                 events: {
-                    onReady: function(event) {
-                        event.target.setVolume(50);
-                    }
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange,
+                    'onError': onPlayerError
                 }
             });
         }
 
-        function toggleMusik() {
+        function onPlayerReady(event) {
+            event.target.setVolume(50);
+        }
+
+        function onPlayerStateChange(event) {
             const tombol = document.getElementById("tombolMusik");
-            if (!player) return;
+            const info = document.getElementById("musicInfo");
+            
+            // Kalau video lagi muter
+            if (event.data == YT.PlayerState.PLAYING) {
+                tombol.innerHTML = "🔊";
+                info.innerHTML = "🎶 Sedang Memutar...";
+                musikAktif = true;
+            } 
+            // Kalau video di-pause
+            else if (event.data == YT.PlayerState.PAUSED) {
+                tombol.innerHTML = "🔇";
+                info.innerHTML = "⏸️ Musik Di-pause";
+                musikAktif = false;
+            }
+        }
+
+        function onPlayerError(event) {
+            // Kalau error (misal video tidak bisa di-embed)
+            document.getElementById("musicInfo").innerHTML = "⚠️ Gagal memutar lagu ini";
+        }
+
+        function toggleMusik() {
+            if (!player) {
+                alert("Pemutar musik masih loading, tunggu sebentar ya...");
+                return;
+            }
 
             if (!musikAktif) {
+                // Trik: paksa unmute dan play pas user klik tombol
+                player.unMute();
+                player.setVolume(70);
                 player.playVideo();
-                tombol.innerHTML = "🔊";
-                musikAktif = true;
             } else {
                 player.pauseVideo();
-                tombol.innerHTML = "🔇";
-                musikAktif = false;
             }
         }
 
@@ -510,7 +514,7 @@
 
         function revealOnScroll() {
             const windowHeight = window.innerHeight;
-            const elementVisible = 100; // Muncul kalau udah masuk 100px dari bawah layar
+            const elementVisible = 100;
 
             reveals.forEach((reveal) => {
                 const elementTop = reveal.getBoundingClientRect().top;
@@ -520,7 +524,6 @@
             });
         }
 
-        // Jalanin pas di-scroll dan pas pertama kali dibuka
         window.addEventListener('scroll', revealOnScroll);
         window.addEventListener('load', revealOnScroll);
     </script>
