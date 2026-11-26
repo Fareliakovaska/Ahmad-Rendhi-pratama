@@ -308,28 +308,58 @@
     </footer>
 
     <!-- ============================================== -->
-    <!-- KODE TOMBOL MUSIK & AUDIO (TAMBAHAN BARU)      -->
+    <!-- KODE TOMBOL MUSIK & YOUTUBE (VERSI BARU)       -->
     <!-- ============================================== -->
-    <div class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</div>
+    
+    <!-- Tombol Musik -->
+    <div class="music-btn" id="musicBtn">🎵</div>
 
-    <audio id="bgMusic" loop>
-        <source src="DJ%20TABRAK-TABRAK%20MASUK%20(Oke%20Gas%202)%20-%20Richard%20Jersey%20(Official%20Music%20Video)(MP3_70K)_1.mp3" type="audio/mpeg">
-    </audio>
+    <!-- Iframe YouTube Tersembunyi (Di-set 1x1 pixel biar gak kelihatan) -->
+    <!-- Video ID: j_ohYSNBqZA -->
+    <div id="youtube-player" style="position: fixed; bottom: -100px; left: -100px;"></div>
+
+    <!-- Script API YouTube -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
-        const audio = document.getElementById('bgMusic');
+        let player;
+        let isPlaying = false;
         const btn = document.getElementById('musicBtn');
 
-        function toggleMusic() {
-            if (audio.paused) {
-                audio.play();
-                btn.innerHTML = '⏸️'; 
-            } else {
-                audio.pause();
-                btn.innerHTML = '🎵'; 
-            }
+        // Fungsi ini otomatis dipanggil oleh API YouTube setelah script dimuat
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '1', // Kecilin ukurannya
+                width: '1',  // Kecilin ukurannya
+                videoId: 'j_ohYSNBqZA', // ID Video dari link yg lu kasih
+                playerVars: {
+                    'playsinline': 1,
+                    'loop': 1,
+                    'playlist': 'j_ohYSNBqZA' // Wajib ada biar loop jalan
+                },
+                events: {
+                    'onReady': (event) => {
+                        // Set volume jadi 50% biar gak kaget
+                        event.target.setVolume(50); 
+                    }
+                }
+            });
         }
+
+        // Fungsi saat tombol diklik
+        btn.addEventListener('click', () => {
+            if (player && player.getPlayerState() !== undefined) {
+                // Kalau belum muter (status bukan 1)
+                if (player.getPlayerState() !== 1) {
+                    player.playVideo();
+                    btn.innerHTML = '⏸️'; 
+                } else {
+                    player.pauseVideo();
+                    btn.innerHTML = '🎵'; 
+                }
+            }
+        });
     </script>
 
 </body>
-</html>
+    </html>
