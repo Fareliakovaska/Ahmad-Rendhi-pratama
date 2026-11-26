@@ -132,7 +132,7 @@
             padding: 20px;
         }
 
-        /* --- TOMBOL MUSIK & INFO LAGU --- */
+        /* --- TOMBOL MUSIK FLOATING --- */
         .music-container {
             position: fixed;
             bottom: 30px;
@@ -153,14 +153,14 @@
             white-space: nowrap;
             opacity: 0; /* Disembunyikan dulu */
             transition: 0.3s;
-            pointer-events: none; /* Biar nggak ganggu klik */
+            pointer-events: none;
         }
 
         .music-container:hover .music-info {
             opacity: 1; /* Muncul pas di-hover */
         }
 
-        .music-btn {
+        #tombolMusik {
             width: 60px;
             height: 60px;
             background: #0066ff;
@@ -172,11 +172,12 @@
             font-size: 28px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 102, 255, 0.4);
+            border: none;
             transition: 0.3s;
             animation: pulse 2s infinite;
         }
 
-        .music-btn:hover {
+        #tombolMusik:hover {
             transform: scale(1.1);
             background: #00bfff;
         }
@@ -219,16 +220,9 @@
     <!-- BERANDA -->
     <section id="beranda">
         <h2>Web BUZZER MBG!!</h2>
-
         <div class="profil">
-            <p>
-                selamat datang ke Web buzzer mbg
-                <b>Kelas 12 kepenjit 1</b>.
-            </p>
-
-            <p>
-                Web BUZZER MBG
-            </p>
+            <p>selamat datang ke Web buzzer mbg <b>Kelas 12 kepenjit 1</b>.</p>
+            <p>Web BUZZER MBG</p>
         </div>
     </section>
 
@@ -312,79 +306,68 @@
     </footer>
 
     <!-- ============================================== -->
-    <!-- KODE TOMBOL MUSIK & YOUTUBE (TAMBAHAN BARU)    -->
+    <!-- KODE MUSIK DARI KAMU (YANG BARU)               -->
     <!-- ============================================== -->
+    
+    <!-- Pemutar musik YouTube (Disembunyikan) -->
+    <div id="player" style="display: none;"></div>
+
+    <!-- Tombol musik melayang -->
     <div class="music-container">
-        <!-- Teks Info Lagu (Muncul pas di-hover) -->
-        <div class="music-info" id="musicInfo">🎶 Instrumental (from YouTube)</div>
-        
-        <!-- Tombol Play -->
-        <div class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</div>
+        <div class="music-info">🎶 Instrumental (YouTube)</div>
+        <button onclick="toggleMusik()" id="tombolMusik">
+            🔇
+        </button>
     </div>
 
-    <!-- Iframe YouTube Tersembunyi -->
-    <div id="ytPlayerContainer" style="display: none;"></div>
-
-    <!-- Script API YouTube -->
+    <!-- YouTube API -->
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
-        let player;
-        const btn = document.getElementById('musicBtn');
-        const musicInfo = document.getElementById('musicInfo');
-        let isPlaying = false;
+    let player;
+    let musikAktif = false;
 
-        // Fungsi yang otomatis dipanggil oleh API YouTube setelah script dimuat
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('ytPlayerContainer', {
-                height: '0',
-                width: '0',
-                videoId: 'j_ohYSNBqZA', // ID video dari link kamu
-                playerVars: {
-                    'autoplay': 0,
-                    'loop': 1,
-                    'playlist': 'j_ohYSNBqZA', // Wajib ditambahin biar loop-nya jalan
-                    'controls': 0
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
+    // Membuat pemutar YouTube
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '0',
+            width: '0',
+            videoId: 'j_ohYSNBqZA', // <--- ID Video punya kamu
+
+            playerVars: {
+                autoplay: 1,
+                loop: 1,
+                playlist: 'j_ohYSNBqZA' // <--- Wajib sama kayak videoId biar bisa loop
+            },
+
+            events: {
+                onReady: function(event) {
+                    // Set volume biar nggak terlalu kenceng
+                    event.target.setVolume(50);
                 }
-            });
-        }
-
-        function onPlayerReady(event) {
-            // Set volume biar nggak terlalu kenceng (0-100)
-            event.target.setVolume(50); 
-        }
-
-        // Deteksi kalau lagu sudah muter atau berhenti
-        function onPlayerStateChange(event) {
-            if (event.data == YT.PlayerState.PLAYING) {
-                btn.innerHTML = '⏸️';
-                musicInfo.innerHTML = '🎶 Sedang Memutar: Instrumental...';
-            } else if (event.data == YT.PlayerState.PAUSED) {
-                btn.innerHTML = '🎵';
-                musicInfo.innerHTML = '⏸️ Musik Di-pause';
             }
+        });
+    }
+
+    // Fungsi tombol musik ON/OFF
+    function toggleMusik() {
+        const tombol = document.getElementById("tombolMusik");
+
+        if (!player) {
+            return; // Kalau player belum siap, abaikan
         }
 
-        // Fungsi pas tombol diklik
-        function toggleMusic() {
-            if (!player) {
-                alert("Musik masih loading, tunggu sebentar ya...");
-                return;
-            }
-
-            if (isPlaying) {
-                player.pauseVideo();
-                isPlaying = false;
-            } else {
-                player.playVideo();
-                isPlaying = true;
-            }
+        if (!musikAktif) {
+            player.playVideo();
+            tombol.innerHTML = "🔊";
+            musikAktif = true;
+        } else {
+            player.pauseVideo();
+            tombol.innerHTML = "🔇";
+            musikAktif = false;
         }
+    }
     </script>
 
 </body>
-    </html>
+    </html> 
